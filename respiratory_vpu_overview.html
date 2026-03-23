@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Respiratory Presentations VPU</title>
+<style>
+  :root { --cr: #B31B1B; --cd: #222; --cw: #F7F4F0; --cm: #E8E0D6; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--cd);background:#FAFAF8;padding:2rem 1rem;}
+  .wrap{max-width:960px;margin:0 auto;}
+  .hdr{border-left:4px solid var(--cr);padding:1.25rem 1.5rem;margin-bottom:2rem;background:linear-gradient(to right,rgba(179,27,27,0.04),transparent);}
+  .hdr .tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cr);margin-bottom:.35rem;}
+  .hdr h1{font-family:Georgia,serif;font-size:1.75rem;font-weight:600;line-height:1.15;color:var(--cd);}
+  .tabs{display:flex;border-bottom:1.5px solid var(--cm);margin-bottom:2rem;overflow-x:auto;}
+  .tb{padding:.6rem 1rem;font-size:13px;font-weight:600;color:#888;background:transparent;border:none;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;}
+  .tb:hover{color:var(--cd);}
+  .tb.active{color:var(--cr);border-bottom-color:var(--cr);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .legend{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;font-size:12px;align-items:center;}
+  .ldot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+  .li{display:flex;align-items:center;gap:5px;}
+  .grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+  .dcol{display:flex;flex-direction:column;gap:5px;}
+  .si{border-radius:5px;padding:7px 9px;font-size:11px;line-height:1.3;border:.5px solid transparent;overflow:hidden;}
+  .si .t{font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;opacity:.65;margin-bottom:2px;}
+  .si .l{font-weight:600;}
+  .si .s{font-size:10px;margin-top:2px;opacity:.75;}
+  .lec{background:#FEF3F3;border-color:#F5CACA;color:#7A1010;}
+  .lab{background:#F0F5FF;border-color:#C5D6F7;color:#1A3A7A;}
+  .dsc{background:#F0F8F3;border-color:#B8DFCA;color:#1A5C38;}
+  .ind{background:#FEF9EC;border-color:#F0D98A;color:#6B4A00;}
+  .lun{background:#F4F0EC;border-color:#DDD5C8;color:#888;font-style:italic;}
+  .sbs{display:flex;gap:4px;}
+  .sbs .si{flex:1;min-width:0;font-size:9.5px;padding:5px 6px;}
+  .sbs .si .t{font-size:8px;}
+  .sbs .si .l{font-weight:600;word-break:break-word;}
+  .sbs .si .s{font-size:9px;}
+  .grow{flex:1;}
+  .dlabel{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cr);padding-bottom:5px;border-bottom:1px solid var(--cm);text-align:center;margin-bottom:2px;}
+  .intro{font-size:13px;color:#666;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--cm);}
+  .ilist{display:block;}
+  .icard{border:.5px solid var(--cm);border-radius:8px;padding:1rem 1.25rem;background:#fff;overflow:visible;height:auto;}
+  .icard .ch{display:flex;align-items:flex-start;gap:10px;margin-bottom:.5rem;}
+  .num{width:24px;height:24px;border-radius:50%;background:var(--cr);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .num.b{background:#2B5BAA;} .num.g{background:#2A6644;} .num.a{background:#9B6800;}
+  .ititle{font-size:14px;font-weight:600;line-height:1.3;color:var(--cd);}
+  .isub{font-size:12px;color:#888;margin-top:1px;}
+  .ol{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#999;margin-bottom:5px;}
+  .oul{list-style:none;display:block;}
+  .oul li{font-size:13px;color:#555;padding-left:16px;position:relative;line-height:1.55;margin-bottom:5px;}
+  .oul li:last-child{margin-bottom:0;}
+  .oul li::before{content:"→";position:absolute;left:0;color:var(--cr);font-size:11px;top:1px;}
+  .oul li.b::before{color:#2B5BAA;} .oul li.g::before{color:#2A6644;} .oul li.a::before{color:#9B6800;}
+  .nb{margin-top:8px;padding:6px 9px;background:var(--cw);border-radius:4px;font-size:11px;color:#666;border-left:2.5px solid var(--cm);}
+  .ilist{display:block;}
+  .ilist .icard{margin-bottom:10px;}
+  @media(max-width:620px){.grid5{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="tag">Cornell University College of Veterinary Medicine</div>
+    <h1>Respiratory Presentations VPU</h1>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tb active" data-tab="sched">Weekly Schedule</button>
+    <button class="tb" data-tab="lec">Lectures</button>
+    <button class="tb" data-tab="ind">Independent Learning</button>
+    <button class="tb" data-tab="lab">Labs</button>
+    <button class="tb" data-tab="dsc">Discussion Groups</button>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="panel active" id="panel-sched">
+    <div class="legend">
+      <div class="li"><div class="ldot" style="background:#F5CACA"></div><span>Lecture</span></div>
+      <div class="li"><div class="ldot" style="background:#C5D6F7"></div><span>Lab</span></div>
+      <div class="li"><div class="ldot" style="background:#B8DFCA"></div><span>Discussion</span></div>
+      <div class="li"><div class="ldot" style="background:#F0D98A"></div><span>Independent learning</span></div>
+      <div class="li"><div class="ldot" style="background:#DDD5C8"></div><span>Lunch</span></div>
+    </div>
+    <div class="grid5" style="margin-bottom:6px;">
+      <div class="dlabel">Monday</div>
+      <div class="dlabel">Tuesday</div>
+      <div class="dlabel">Wednesday</div>
+      <div class="dlabel">Thursday</div>
+      <div class="dlabel">Friday</div>
+    </div>
+    <div class="grid5" id="morning-row" style="margin-bottom:5px;align-items:stretch;">
+      <div class="dcol">
+        <div class="si ind grow"><div class="t">8:00–12:00</div><div class="l">Independent Learning Time</div></div>
+      </div>
+      <div class="dcol">
+        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si lab grow"><div class="t">10:00–12:00</div><div class="l">Imaging Lab</div><div class="s">1/2 class</div></div>
+      </div>
+      <div class="dcol">
+        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="sbs grow">
+          <div class="si lab"><div class="t">10:00–12:00</div><div class="l">Imaging Lab</div><div class="s">1/2 class</div></div>
+          <div class="si lab"><div class="t">10:00–12:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
+        </div>
+      </div>
+      <div class="dcol">
+        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si lab grow"><div class="t">10:00–11:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
+        <div class="sbs grow">
+          <div class="si lab"><div class="t">11:00–12:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
+          <div class="si dsc"><div class="t">11:00–12:00</div><div class="l">Imaging Case Discussions</div><div class="s">Small groups</div></div>
+        </div>
+      </div>
+      <div class="dcol">
+        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si dsc grow"><div class="t">10:00–12:00</div><div class="l">Imaging Case Discussions</div><div class="s">Small groups</div></div>
+      </div>
+    </div>
+    <div class="grid5" style="margin-bottom:5px;">
+      <div class="si lun"><div class="t">12:00–1:00</div><div class="l">Lunch</div></div>
+      <div class="si lun"><div class="t">12:00–1:00</div><div class="l">Lunch</div></div>
+      <div class="si lun"><div class="t">12:00–1:00</div><div class="l">Lunch</div></div>
+      <div class="si lun"><div class="t">12:00–1:00</div><div class="l">Lunch</div></div>
+      <div class="si lun"><div class="t">12:00–1:00</div><div class="l">Lunch</div></div>
+    </div>
+    <div class="grid5" style="align-items:stretch;">
+      <div class="dcol">
+        <div class="si lec grow"><div class="t">1:00–2:00</div><div class="l">Assessing the Respiratory System in Small Animals</div></div>
+        <div class="si lec grow"><div class="t">2:00–3:00</div><div class="l">Assessing the Respiratory System in Large Animals</div></div>
+        <div class="si lec grow"><div class="t">3:00–4:00</div><div class="l">Imaging the Respiratory System</div></div>
+      </div>
+      <div class="dcol">
+        <div class="si lec grow"><div class="t">1:00–2:00</div><div class="l">Differentiating Cardiac from Respiratory Disease</div></div>
+        <div class="si lec grow"><div class="t">2:00–3:00</div><div class="l">Approach to Respiratory Distress</div></div>
+        <div class="si lec grow"><div class="t">3:00–4:00</div><div class="l">General Management Strategies for Respiratory Disorders</div></div>
+      </div>
+      <div class="dcol">
+        <div class="si lab grow"><div class="t">1:00–4:00</div><div class="l">Respiratory Distress Simulations</div></div>
+      </div>
+      <div class="dcol">
+        <div class="si dsc grow"><div class="t">1:00–4:00</div><div class="l">LA Resp Case Discussions</div></div>
+      </div>
+      <div class="dcol">
+        <div class="si dsc grow"><div class="t">1:00–4:00</div><div class="l">SA Resp Case Discussions</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LECTURES -->
+  <div class="panel" id="panel-lec">
+    <p class="intro">Six lectures progressing from systematic assessment → localization → imaging → emergency management → therapeutics across small and large animal species.</p>
+    <div class="ilist">
+      <div class="icard">
+        <div class="ch"><div class="num">1</div><div><div class="ititle">Assessing the Respiratory System in Small Animals</div><div class="isub">Monday · 1:00–2:00</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li>Apply structured clinical frameworks to categorize common respiratory presentations (e.g., cough, sneezing/nasal discharge, noisy breathing) in dogs and cats</li>
+          <li>Localize respiratory disease to the upper airway, lower airway, pulmonary parenchyma, or pleural space based on history and clinical signs</li>
+          <li>Elicit and prioritize targeted history questions to refine problem representation and differential diagnoses</li>
+          <li>Interpret key physical examination findings (e.g., auscultation, respiratory effort, mucous membrane color) to guide clinical reasoning</li>
+          <li>Recognize clinical signs of respiratory distress and determine when immediate stabilization is indicated</li>
+          <li>Differentiate respiratory patterns (e.g., restrictive vs. upper airway obstructive vs. lower airway obstructive vs. paradoxical) and associate them with underlying pathophysiology</li>
+          <li>Integrate history, physical exam findings, and respiratory patterns to generate prioritized differential diagnoses</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num">2</div><div><div class="ititle">Assessing the Respiratory System in Large Animals</div><div class="isub">Monday · 2:00–3:00</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li>Apply structured clinical frameworks to categorize common respiratory presentations in large animals (e.g., nasal discharge, cough, increased respiratory effort, noisy breathing)</li>
+          <li>Localize respiratory disease to the upper airway, lower airway, pulmonary parenchyma, or pleural space in large animals</li>
+          <li>Elicit and prioritize targeted history questions, including herd-level and environmental factors, to refine respiratory problem representation</li>
+          <li>Interpret key respiratory physical examination findings (e.g., auscultation, airflow, percussion, respiratory effort) in large animals</li>
+          <li>Recognize clinical signs of respiratory distress in large animals and determine when immediate intervention or referral is warranted</li>
+          <li>Differentiate respiratory patterns (e.g., inspiratory vs. expiratory effort, abdominal lift, nostril flare) and associate them with underlying pathophysiology</li>
+          <li>Integrate history, physical examination findings, and respiratory patterns to generate prioritized differential diagnoses in large animals</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num">3</div><div><div class="ititle">Imaging the Respiratory System</div><div class="isub">Monday · 3:00–4:00</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li>Select appropriate thoracic imaging modalities (e.g., radiography, POCUS, CT, fluoroscopy) based on clinical presentation, species, and suspected disease process</li>
+          <li>Match thoracic imaging modalities with their primary clinical indications, advantages, and limitations in small and large animal patients</li>
+          <li>Identify normal thoracic structures on standard radiographic projections in dogs and cats</li>
+          <li>Apply a systematic approach to thoracic radiograph interpretation (e.g., cardiac silhouette, pulmonary patterns, pleural space, mediastinum)</li>
+          <li>Interpret common thoracic POCUS findings (e.g., glide sign, B-lines, pleural effusion, shred sign) and associate them with underlying pathology</li>
+          <li>Compare species-specific considerations for thoracic imaging in large animals</li>
+          <li>Integrate clinical findings with imaging results to prioritize differential diagnoses and guide next diagnostic or therapeutic steps</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num">4</div><div><div class="ititle">Differentiating Cardiac from Respiratory Disease</div><div class="isub">Tuesday · 1:00–2:00</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li>Differentiate historical features that increase or decrease the likelihood of cardiac versus primary respiratory disease in dogs and cats</li>
+          <li>Compare and contrast overlapping clinical signs of cardiac and respiratory disease, and identify distinguishing features</li>
+          <li>Recognize breed predispositions for common cardiac diseases (e.g., MMVD, DCM) and incorporate them into clinical reasoning</li>
+          <li>Explain the pathophysiologic mechanisms by which cardiac disease produces respiratory signs (e.g., pulmonary edema, left atrial enlargement)</li>
+          <li>Interpret physical examination findings to assess the likelihood of cardiac versus respiratory disease</li>
+          <li>Select appropriate first-line diagnostic tests (e.g., NT-proBNP, thoracic POCUS, thoracic radiographs) based on clinical presentation</li>
+          <li>Integrate history, breed, physical examination findings, and initial diagnostics to prioritize cardiac versus respiratory disease</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num">5</div><div><div class="ititle">Approach to Respiratory Distress</div><div class="isub">Tuesday · 2:00–3:00</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li>Apply a structured clinical framework to categorize causes of abnormal breathing in small animal patients</li>
+          <li>Recognize clinical signs of respiratory distress and determine when immediate intervention is required</li>
+          <li>Localize the underlying cause of respiratory distress using targeted physical examination findings</li>
+          <li>Select appropriate point-of-care diagnostic tests (e.g., thoracic POCUS, blood gas analysis, pulse oximetry, NT-proBNP, CRP) based on patient stability</li>
+          <li>Implement initial stabilization strategies (e.g., oxygen therapy, thoracocentesis, sedation, empirical diuretics) based on clinical presentation</li>
+          <li>Justify initiating empirical treatment before definitive diagnosis, considering risks, benefits, and likely disease processes</li>
+          <li>Integrate clinical presentation, physical examination findings, and point-of-care diagnostics to prioritize differential diagnoses and guide immediate stabilization</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num">6</div><div><div class="ititle">General Management Strategies for Respiratory Disorders</div><div class="isub">Tuesday · 3:00–4:00</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li>Determine appropriate indications for endotracheal wash and outline the key steps required to safely perform the procedure</li>
+          <li>Select appropriate oxygen therapy modalities (e.g., flow-by, nasal cannula, oxygen cage) based on patient size, species, and severity of respiratory compromise</li>
+          <li>Select and justify the use of inhaled therapeutics (e.g., bronchodilators, corticosteroids) based on suspected disease mechanisms and patient factors</li>
+          <li>Apply nebulization strategies to optimize airway hydration and drug delivery</li>
+          <li>Differentiate between the indications for bronchodilators and mucolytics and incorporate them into treatment plans</li>
+          <li>Interpret CRP trends to guide antimicrobial duration and support antimicrobial stewardship</li>
+          <li>Evaluate the role of metaphylaxis, vaccination, and antiparasitic therapy in prevention and management at the individual and population level</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDEPENDENT LEARNING -->
+  <div class="panel" id="panel-ind">
+    <p class="intro">Seven self-directed learning modules covering the full breadth of respiratory and cardiac presentations across species, completed during morning independent learning blocks throughout the week.</p>
+    <div class="ilist">
+
+      <div class="icard">
+        <div class="ch"><div class="num a">1</div><div><div class="ititle">Upper Airway Diseases</div><div class="isub">Self-paced</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="a">Differentiate major infectious upper respiratory diseases across species (e.g., CIRDC, feline URTD, bovine respiratory disease complex, equine viral URD and strangles, swine influenza and atrophic rhinitis, small ruminant URD) based on pathophysiology, transmission, and clinical presentation</li>
+          <li class="a">Select appropriate diagnostic approaches for suspected infectious upper respiratory disease, including test choice based on species, clinical presentation, and stage of disease</li>
+          <li class="a">Develop initial management and prevention plans for infectious upper respiratory diseases, including isolation, targeted therapeutics, and vaccination strategies</li>
+          <li class="a">Differentiate inflammatory upper airway diseases (e.g., nasopharyngeal polyps, lymphocytic-plasmacytic rhinitis, chronic rhinosinusitis, equine sinusitis, post-dehorning sinusitis) based on clinical features, chronicity, and diagnostic findings</li>
+          <li class="a">Select appropriate diagnostic tests and interpret findings to confirm inflammatory upper airway disease and exclude infectious or neoplastic causes</li>
+          <li class="a">Develop management plans for inflammatory upper airway diseases, including medical and surgical options and expected response to therapy</li>
+          <li class="a">Relate structural abnormalities (e.g., laryngeal paralysis, laryngeal hemiplegia, brachycephalic obstructive airway syndrome, cervical tracheal collapse) to their underlying anatomic and pathophysiologic mechanisms</li>
+          <li class="a">Recognize hallmark clinical signs of structural upper airway disease across species and use them to guide localization and differential diagnosis</li>
+          <li class="a">Develop diagnostic and management plans for structural airway disorders, including medical stabilization, surgical intervention, and management of complications</li>
+          <li class="a">Recognize clinical and imaging features suggestive of nasal neoplasia in dogs and cats and differentiate them from inflammatory or infectious disease</li>
+          <li class="a">Select appropriate diagnostic tests to confirm nasal neoplasia and stage disease</li>
+          <li class="a">Evaluate treatment options and prognosis for common nasal tumors based on tumor type, location, and disease extent</li>
+        </ul>
+      </div>
+
+      <div class="icard">
+        <div class="ch"><div class="num a">2</div><div><div class="ititle">Lower Airway Diseases</div><div class="isub">Self-paced</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="a">Differentiate inflammatory lower airway diseases (e.g., feline asthma, equine asthma, non-infectious bronchitis) based on pathophysiology, species, and clinical presentation</li>
+          <li class="a">Select appropriate diagnostic tests (e.g., airway sampling, imaging) and interpret findings to confirm inflammatory lower airway disease</li>
+          <li class="a">Develop management plans for inflammatory lower airway disease, including environmental modification and pharmacologic therapy (e.g., corticosteroids, bronchodilators)</li>
+          <li class="a">Differentiate infectious bronchitis from non-infectious inflammatory airway disease based on history, clinical findings, and diagnostic results</li>
+          <li class="a">Select and interpret diagnostic tests to identify infectious etiologies (e.g., bacterial, viral, parasitic) of lower airway disease</li>
+          <li class="a">Develop targeted treatment plans for infectious bronchitis, incorporating antimicrobial stewardship principles</li>
+          <li class="a">Select appropriate tests, treatment, and prevention strategies for respiratory parasites, including appropriate anthelmintic use and management of reinfection risk</li>
+          <li class="a">Relate structural abnormalities (e.g., tracheal and bronchial collapse) to underlying anatomic and pathophysiologic mechanisms</li>
+          <li class="a">Recognize clinical features (e.g., honking cough, dynamic airway obstruction) and differentiate structural airway disease from inflammatory or infectious causes</li>
+          <li class="a">Develop diagnostic and management plans for airway collapse, including medical therapy, interventional options, and monitoring for complications</li>
+        </ul>
+      </div>
+
+      <div class="icard">
+        <div class="ch"><div class="num a">3</div><div><div class="ititle">Lung Parenchyma</div><div class="isub">Self-paced</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="a">Differentiate types of pneumonia (e.g., bacterial, aspiration, viral) based on pathophysiology, risk factors, and clinical presentation across species</li>
+          <li class="a">Select and interpret diagnostic tests (e.g., imaging, airway sampling) to confirm pneumonia and identify underlying etiology</li>
+          <li class="a">Develop treatment plans for pneumonia, incorporating antimicrobial stewardship, supportive care, and monitoring of response to therapy</li>
+          <li class="a">Differentiate cardiogenic and non-cardiogenic pulmonary edema based on pathophysiology, clinical presentation, and imaging findings</li>
+          <li class="a">Interpret historical, physical examination, and diagnostic findings to determine the underlying cause of pulmonary edema</li>
+          <li class="a">Select appropriate initial management strategies (e.g., oxygen, diuretics, supportive care) based on suspected etiology of pulmonary edema</li>
+          <li class="a">Differentiate primary pulmonary neoplasia from metastatic disease based on clinical presentation, imaging patterns, and signalment</li>
+          <li class="a">Select appropriate diagnostic tests to confirm pulmonary neoplasia and determine extent of disease</li>
+          <li class="a">Evaluate treatment options and prognosis for pulmonary neoplasia based on tumor type, distribution, and patient factors</li>
+          <li class="a">Explain the pathophysiology of pulmonary contusions and their impact on gas exchange</li>
+          <li class="a">Recognize clinical and imaging features of pulmonary trauma and differentiate them from other causes of parenchymal disease</li>
+          <li class="a">Develop stabilization and monitoring plans for patients with pulmonary contusions, including oxygen therapy and reassessment strategies</li>
+        </ul>
+      </div>
+
+      <div class="icard">
+        <div class="ch"><div class="num a">4</div><div><div class="ititle">Pleural Space</div><div class="isub">Self-paced</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="a">Apply a structured framework to categorize pleural effusions (e.g., air, pus, chyle, blood) based on history, physical examination, and initial diagnostics</li>
+          <li class="a">Select appropriate point-of-care diagnostics (e.g., thoracocentesis, POCUS) to confirm pleural space disease and guide immediate management</li>
+          <li class="a">Differentiate types of pneumothorax (e.g., traumatic, spontaneous, open vs. closed) based on clinical presentation and underlying cause</li>
+          <li class="a">Develop stabilization and management plans for pneumothorax, including indications for thoracocentesis, chest tube placement, and surgical intervention</li>
+          <li class="a">Recognize clinical and cytologic features of pyothorax and differentiate it from other causes of pleural effusion</li>
+          <li class="a">Develop treatment plans for pyothorax, including drainage, antimicrobial therapy, and monitoring for complications</li>
+          <li class="a">Identify characteristic features of chylothorax and differentiate it from other pleural effusions based on fluid analysis and clinical context</li>
+          <li class="a">Evaluate medical and surgical management options for chylothorax and associated prognosis</li>
+          <li class="a">Differentiate hemothorax from other pleural effusions based on clinical presentation, fluid characteristics, and underlying causes (e.g., trauma, coagulopathy, neoplasia)</li>
+          <li class="a">Develop stabilization and management plans for hemothorax, including fluid resuscitation, drainage, and treatment of underlying causes</li>
+          <li class="a">Recognize clinical and imaging features of diaphragmatic hernia and differentiate it from other causes of respiratory distress</li>
+          <li class="a">Develop diagnostic and management plans for diaphragmatic hernia, including stabilization and timing of surgical intervention</li>
+        </ul>
+      </div>
+
+      <div class="icard">
+        <div class="ch"><div class="num a">5</div><div><div class="ititle">SA Cardiac Diseases</div><div class="isub">Self-paced</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="a">Recognize hallmark features of myxomatous mitral valve degeneration (e.g., left apical systolic murmur, small breed predisposition) and relate them to disease progression</li>
+          <li class="a">Stage MMVD and develop management plans based on disease severity, including monitoring and medical therapy</li>
+          <li class="a">Differentiate dilated cardiomyopathy from other cardiac diseases based on signalment, clinical signs, and diagnostic findings</li>
+          <li class="a">Develop diagnostic and management plans for DCM, including treatment of systolic dysfunction and associated arrhythmias</li>
+          <li class="a">Recognize clinical presentations of feline hypertrophic cardiomyopathy, including asymptomatic disease, heart failure, and arterial thromboembolism</li>
+          <li class="a">Develop diagnostic and management plans for HCM, including risk assessment for complications and long-term monitoring</li>
+          <li class="a">Explain the life cycle and pathophysiology of heartworm disease and relate it to clinical manifestations in dogs and cats</li>
+          <li class="a">Differentiate clinical presentations of heartworm disease between dogs and cats and recognize associated complications (e.g., pulmonary hypertension, caval syndrome)</li>
+          <li class="a">Select appropriate diagnostic tests and develop treatment and prevention plans for heartworm disease</li>
+        </ul>
+      </div>
+
+      <div class="icard">
+        <div class="ch"><div class="num a">6</div><div><div class="ititle">Congestive Heart Failure</div><div class="isub">Self-paced</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="a">Explain the pathophysiologic mechanisms leading to congestive heart failure (CHF), including increased hydrostatic pressure, fluid accumulation, and neurohormonal activation</li>
+          <li class="a">Differentiate left-sided versus right-sided CHF based on underlying pathophysiology and resulting clinical signs (e.g., pulmonary edema vs. pleural effusion/ascites)</li>
+          <li class="a">Recognize clinical signs of CHF (e.g., tachypnea, dyspnea, cough, exercise intolerance) and distinguish them from non-cardiac causes of respiratory distress</li>
+          <li class="a">Interpret physical examination and diagnostic findings to differentiate CHF from primary respiratory disease and to characterize severity of disease</li>
+          <li class="a">Develop initial stabilization plans for patients with CHF, including oxygen therapy, diuretics, and supportive care based on clinical severity</li>
+          <li class="a">Select and justify long-term medical therapies (e.g., diuretics, ACE inhibitors, pimobendan) based on underlying disease and stage of CHF</li>
+          <li class="a">Monitor response to therapy and adjust treatment plans based on clinical progression and adverse effects</li>
+          <li class="a">Evaluate prognosis for dogs and cats with CHF based on underlying disease, severity, and response to therapy</li>
+          <li class="a">Communicate expected disease progression, treatment goals, and monitoring strategies to clients managing pets with CHF</li>
+        </ul>
+      </div>
+
+      <div class="icard">
+        <div class="ch"><div class="num a">7</div><div><div class="ititle">Self-directed review</div><div class="isub">Self-paced</div></div></div>
+        <div class="ol">Note</div>
+        <div class="nb">Use this time to revisit any module content before the afternoon case discussions and cardiac lab sessions.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LABS -->
+  <div class="panel" id="panel-lab">
+    <p class="intro">Three hands-on sessions developing clinical skills in thoracic imaging interpretation, respiratory emergency management, and cardiac case reasoning.</p>
+    <div class="ilist">
+      <div class="icard">
+        <div class="ch"><div class="num b">1</div><div><div class="ititle">Thoracic Imaging Lab</div><div class="isub">Tuesday &amp; Wednesday · 10:00–12:00 (split class)</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="b">Assess thoracic radiographs for image quality and positioning and determine whether they are adequate for interpretation</li>
+          <li class="b">Identify normal thoracic structures on standard radiographic projections (cardiac silhouette, pulmonary vessels, lung fields, pleural space, mediastinum)</li>
+          <li class="b">Apply a systematic approach to thoracic radiograph interpretation to evaluate the cardiac silhouette, pulmonary parenchyma, pleural space, and mediastinum</li>
+          <li class="b">Recognize and differentiate common pulmonary patterns (e.g., alveolar, interstitial, bronchial, nodular) and associate them with underlying disease processes</li>
+          <li class="b">Identify imaging features of pleural space disease and distinguish them from parenchymal disease</li>
+          <li class="b">Interpret common thoracic POCUS findings (e.g., lung sliding, B-lines, pleural effusion, shred sign) and relate them to underlying pathology</li>
+          <li class="b">Integrate imaging findings with clinical presentation to localize disease and prioritize differential diagnoses</li>
+          <li class="b">Recommend appropriate next diagnostic or therapeutic steps based on imaging findings</li>
+          <li class="b">Communicate radiographic findings using clear, structured terminology and appropriate clinical interpretation</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num b">2</div><div><div class="ititle">Treating the Cardiac Patient</div><div class="isub">Wednesday &amp; Thursday · 10:00–12:00 (split class)</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="b">Use signalment and breed predispositions to prioritize differential diagnoses (e.g., MMVD in small breeds, DCM in large breeds, HCM in cats, heartworm risk factors)</li>
+          <li class="b">Interpret physical examination findings (e.g., murmur characteristics, arrhythmias, pulse quality, respiratory pattern) to localize cardiac disease and assess severity</li>
+          <li class="b">Differentiate clinical features of major cardiac diseases (MMVD, DCM, HCM, heartworm disease) based on examination and initial findings</li>
+          <li class="b">Select appropriate first-line diagnostic tests based on patient stability and suspected disease</li>
+          <li class="b">Initiate appropriate stabilization for patients with cardiac compromise based on clinical presentation</li>
+          <li class="b">Develop disease-specific treatment plans and adjust based on response to therapy and evolving clinical findings</li>
+          <li class="b">Recognize and manage common complications (e.g., CHF, thromboembolism, pulmonary hypertension)</li>
+          <li class="b">Communicate diagnosis, treatment options, and prognosis effectively to clients and within a veterinary care team</li>
+          <li class="b">Reflect on clinical reasoning, prioritization, and decision-making during post-case debriefing</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num b">3</div><div><div class="ititle">Respiratory Distress Simulations</div><div class="isub">Wednesday · 1:00–4:00</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="b">Recognize clinical signs of respiratory distress (e.g., increased respiratory effort, abnormal posture, cyanosis, altered mentation) and prioritize patients requiring immediate intervention</li>
+          <li class="b">Differentiate respiratory patterns and use them to localize disease to the airway, pulmonary parenchyma, or pleural space</li>
+          <li class="b">Initiate appropriate stabilization measures (e.g., oxygen therapy, minimal handling, positioning) based on clinical presentation</li>
+          <li class="b">Determine when emergent interventions (e.g., thoracocentesis, sedation, airway support) are indicated and implement them appropriately</li>
+          <li class="b">Prioritize interventions over diagnostics in unstable patients and justify clinical decisions made under time pressure</li>
+          <li class="b">Select appropriate point-of-care diagnostics based on patient stability and suspected disease category</li>
+          <li class="b">Develop and implement targeted treatment plans based on suspected underlying cause; reassess and adjust based on patient response</li>
+          <li class="b">Communicate clinical findings, priorities, and treatment plans effectively within a team during management of a patient in respiratory distress</li>
+          <li class="b">Reflect on clinical decision-making during post-case debriefing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCUSSION GROUPS -->
+  <div class="panel" id="panel-dsc">
+    <p class="intro">Three discussion group sessions applying clinical reasoning to complex cases across large animal, small animal, and thoracic imaging presentations.</p>
+    <div class="ilist">
+      <div class="icard">
+        <div class="ch"><div class="num g">1</div><div><div class="ititle">LA Respiratory Case Discussions</div><div class="isub">Thursday · 1:00–4:00 · Small groups</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="g">Develop problem representations that incorporate individual animal findings along with herd-level and environmental factors</li>
+          <li class="g">Localize respiratory disease using clinical signs, observation, and auscultation in large animal patients</li>
+          <li class="g">Prioritize differential diagnoses for common respiratory diseases across species using clinical and epidemiologic context</li>
+          <li class="g">Select and interpret diagnostic approaches appropriate to field conditions, including feasibility, cost, and herd-level implications</li>
+          <li class="g">Develop treatment and prevention plans that integrate individual patient care with herd-level management, including vaccination, biosecurity, and metaphylaxis</li>
+          <li class="g">Apply resource- and systems-based decision-making by balancing clinical benefit, cost, logistics, and herd impact, and communicate recommendations effectively</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num g">2</div><div><div class="ititle">SA Respiratory Case Discussions</div><div class="isub">Friday · 1:00–4:00 · Small groups</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="g">Localize respiratory disease to the upper airway, lower airway, pulmonary parenchyma, or pleural space based on clinical presentation</li>
+          <li class="g">Prioritize differential diagnoses for common respiratory presentations using pattern recognition and clinical reasoning</li>
+          <li class="g">Select and interpret appropriate diagnostic tests (e.g., imaging, POCUS, airway sampling) based on patient stability and suspected disease process</li>
+          <li class="g">Develop initial stabilization and treatment plans tailored to the underlying disease and severity of illness</li>
+          <li class="g">Apply spectrum of care principles to adapt diagnostic and treatment plans based on patient needs, client goals, and available resources</li>
+          <li class="g">Reassess and refine diagnostic and treatment plans based on patient response and evolving clinical information, and clearly communicate clinical reasoning during case discussions</li>
+        </ul>
+      </div>
+      <div class="icard">
+        <div class="ch"><div class="num g">3</div><div><div class="ititle">Imaging Case Discussions</div><div class="isub">Thursday 11:00–12:00 &amp; Friday 10:00–12:00 · Small groups</div></div></div>
+        <div class="ol">Learning Outcomes</div>
+        <ul class="oul">
+          <li class="g">Apply a systematic approach to thoracic imaging interpretation to evaluate the cardiac silhouette, pulmonary parenchyma, pleural space, and mediastinum</li>
+          <li class="g">Recognize and differentiate common imaging patterns (e.g., alveolar, interstitial, bronchial, nodular, pleural effusion, pneumothorax) and associate them with underlying disease processes</li>
+          <li class="g">Integrate imaging findings with clinical presentation to localize disease to the airway, pulmonary parenchyma, pleural space, or cardiac origin</li>
+          <li class="g">Prioritize differential diagnoses based on imaging patterns, signalment, and clinical context</li>
+          <li class="g">Select appropriate next diagnostic or therapeutic steps (e.g., thoracocentesis, echocardiography, airway sampling, advanced imaging) based on imaging findings and patient stability</li>
+          <li class="g">Communicate imaging findings and clinical reasoning clearly using structured terminology during case discussions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  document.getElementById('tabs').addEventListener('click', function(e) {
+    var btn = e.target.closest('.tb');
+    if (!btn) return;
+    var tab = btn.getAttribute('data-tab');
+    document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+    btn.classList.add('active');
+    document.getElementById('panel-'+tab).classList.add('active');
+  });
+
+  function equalise() {
+    var row = document.getElementById('morning-row');
+    if (!row) return;
+    var cols = row.querySelectorAll('.dcol');
+    cols.forEach(function(c){ c.style.height = 'auto'; });
+    var max = 0;
+    cols.forEach(function(c){ max = Math.max(max, c.offsetHeight); });
+    cols.forEach(function(c){
+      c.style.height = max + 'px';
+      c.style.display = 'flex';
+      c.style.flexDirection = 'column';
+      c.querySelectorAll('.grow').forEach(function(g){ g.style.flex = '1'; });
+      c.querySelectorAll('.sbs').forEach(function(s){ s.style.flex = '1'; s.style.display = 'flex'; s.style.alignItems = 'stretch'; });
+    });
+  }
+  window.addEventListener('load', equalise);
+  window.addEventListener('resize', equalise);
+  setTimeout(equalise, 100);
+  setTimeout(equalise, 500);
+</script>
+</body>
+</html>
