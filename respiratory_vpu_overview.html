@@ -24,6 +24,8 @@
   .grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
   .dcol{display:flex;flex-direction:column;gap:5px;}
   .si{border-radius:5px;padding:7px 9px;font-size:11px;line-height:1.3;border:.5px solid transparent;overflow:hidden;}
+  .si.clickable{cursor:pointer;transition:filter .15s,box-shadow .15s;}
+  .si.clickable:hover{filter:brightness(0.94);box-shadow:0 0 0 1.5px rgba(0,0,0,0.15);}
   .si .t{font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;opacity:.65;margin-bottom:2px;}
   .si .l{font-weight:600;}
   .si .s{font-size:10px;margin-top:2px;opacity:.75;}
@@ -93,30 +95,30 @@
     </div>
     <div class="grid5" id="morning-row" style="margin-bottom:5px;align-items:stretch;">
       <div class="dcol">
-        <div class="si ind grow"><div class="t">8:00–12:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si ind grow clickable" onclick="goTo('ind','card-ind')"><div class="t">8:00–12:00</div><div class="l">Independent Learning Time</div></div>
       </div>
       <div class="dcol">
-        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
-        <div class="si lab grow"><div class="t">10:00–12:00</div><div class="l">Imaging Lab</div><div class="s">1/2 class</div></div>
+        <div class="si ind grow clickable" onclick="goTo('ind','card-ind')"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si lab grow clickable" onclick="goTo('lab','card-lab-1')"><div class="t">10:00–12:00</div><div class="l">Imaging Lab</div><div class="s">1/2 class</div></div>
       </div>
       <div class="dcol">
-        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si ind grow clickable" onclick="goTo('ind','card-ind')"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
         <div class="sbs grow">
-          <div class="si lab"><div class="t">10:00–12:00</div><div class="l">Imaging Lab</div><div class="s">1/2 class</div></div>
-          <div class="si lab"><div class="t">10:00–12:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
+          <div class="si lab clickable" onclick="goTo('lab','card-lab-1')"><div class="t">10:00–12:00</div><div class="l">Imaging Lab</div><div class="s">1/2 class</div></div>
+          <div class="si lab clickable" onclick="goTo('lab','card-lab-2')"><div class="t">10:00–12:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
         </div>
       </div>
       <div class="dcol">
-        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
-        <div class="si lab grow"><div class="t">10:00–11:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
+        <div class="si ind grow clickable" onclick="goTo('ind','card-ind')"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si lab grow clickable" onclick="goTo('lab','card-lab-2')"><div class="t">10:00–11:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
         <div class="sbs grow">
-          <div class="si lab"><div class="t">11:00–12:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
-          <div class="si dsc"><div class="t">11:00–12:00</div><div class="l">Imaging Case Discussions</div><div class="s">Small groups</div></div>
+          <div class="si lab clickable" onclick="goTo('lab','card-lab-2')"><div class="t">11:00–12:00</div><div class="l">Treating the Cardiac Patient</div><div class="s">1/2 class</div></div>
+          <div class="si dsc clickable" onclick="goTo('dsc','card-dsc-3')"><div class="t">11:00–12:00</div><div class="l">Imaging Case Discussions</div><div class="s">Small groups</div></div>
         </div>
       </div>
       <div class="dcol">
-        <div class="si ind grow"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
-        <div class="si dsc grow"><div class="t">10:00–12:00</div><div class="l">Imaging Case Discussions</div><div class="s">Small groups</div></div>
+        <div class="si ind grow clickable" onclick="goTo('ind','card-ind')"><div class="t">8:00–10:00</div><div class="l">Independent Learning Time</div></div>
+        <div class="si dsc grow clickable" onclick="goTo('dsc','card-dsc-3')"><div class="t">10:00–12:00</div><div class="l">Imaging Case Discussions</div><div class="s">Small groups</div></div>
       </div>
     </div>
     <div class="grid5" style="margin-bottom:5px;">
@@ -128,23 +130,23 @@
     </div>
     <div class="grid5" style="align-items:stretch;">
       <div class="dcol">
-        <div class="si lec grow"><div class="t">1:00–2:00</div><div class="l">Assessing the Respiratory System in Small Animals</div></div>
-        <div class="si lec grow"><div class="t">2:00–3:00</div><div class="l">Assessing the Respiratory System in Large Animals</div></div>
-        <div class="si lec grow"><div class="t">3:00–4:00</div><div class="l">Imaging the Respiratory System</div></div>
+        <div class="si lec grow clickable" onclick="goTo('lec','card-lec-1')"><div class="t">1:00–2:00</div><div class="l">Assessing the Respiratory System in Small Animals</div></div>
+        <div class="si lec grow clickable" onclick="goTo('lec','card-lec-2')"><div class="t">2:00–3:00</div><div class="l">Assessing the Respiratory System in Large Animals</div></div>
+        <div class="si lec grow clickable" onclick="goTo('lec','card-lec-3')"><div class="t">3:00–4:00</div><div class="l">Imaging the Respiratory System</div></div>
       </div>
       <div class="dcol">
-        <div class="si lec grow"><div class="t">1:00–2:00</div><div class="l">Differentiating Cardiac from Respiratory Disease</div></div>
-        <div class="si lec grow"><div class="t">2:00–3:00</div><div class="l">Approach to Respiratory Distress</div></div>
-        <div class="si lec grow"><div class="t">3:00–4:00</div><div class="l">General Management Strategies for Respiratory Disorders</div></div>
+        <div class="si lec grow clickable" onclick="goTo('lec','card-lec-4')"><div class="t">1:00–2:00</div><div class="l">Differentiating Cardiac from Respiratory Disease</div></div>
+        <div class="si lec grow clickable" onclick="goTo('lec','card-lec-5')"><div class="t">2:00–3:00</div><div class="l">Approach to Respiratory Distress</div></div>
+        <div class="si lec grow clickable" onclick="goTo('lec','card-lec-6')"><div class="t">3:00–4:00</div><div class="l">General Management Strategies for Respiratory Disorders</div></div>
       </div>
       <div class="dcol">
-        <div class="si lab grow"><div class="t">1:00–4:00</div><div class="l">Respiratory Distress Simulations</div></div>
+        <div class="si lab grow clickable" onclick="goTo('lab','card-lab-3')"><div class="t">1:00–4:00</div><div class="l">Respiratory Distress Simulations</div></div>
       </div>
       <div class="dcol">
-        <div class="si dsc grow"><div class="t">1:00–4:00</div><div class="l">LA Resp Case Discussions</div></div>
+        <div class="si dsc grow clickable" onclick="goTo('dsc','card-dsc-1')"><div class="t">1:00–4:00</div><div class="l">LA Resp Case Discussions</div></div>
       </div>
       <div class="dcol">
-        <div class="si dsc grow"><div class="t">1:00–4:00</div><div class="l">SA Resp Case Discussions</div></div>
+        <div class="si dsc grow clickable" onclick="goTo('dsc','card-dsc-2')"><div class="t">1:00–4:00</div><div class="l">SA Resp Case Discussions</div></div>
       </div>
     </div>
   </div>
@@ -153,7 +155,7 @@
   <div class="panel" id="panel-lec">
     <p class="intro">Six lectures progressing from systematic assessment → localization → imaging → emergency management → therapeutics across small and large animal species.</p>
     <div class="ilist">
-      <div class="icard">
+      <div class="icard" id="card-lec-1">
         <div class="ch"><div class="num">1</div><div><div class="ititle">Assessing the Respiratory System in Small Animals</div><div class="isub">Monday · 1:00–2:00</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -166,7 +168,7 @@
           <li>Integrate history, physical exam findings, and respiratory patterns to generate prioritized differential diagnoses</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-lec-2">
         <div class="ch"><div class="num">2</div><div><div class="ititle">Assessing the Respiratory System in Large Animals</div><div class="isub">Monday · 2:00–3:00</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -179,7 +181,7 @@
           <li>Integrate history, physical examination findings, and respiratory patterns to generate prioritized differential diagnoses in large animals</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-lec-3">
         <div class="ch"><div class="num">3</div><div><div class="ititle">Imaging the Respiratory System</div><div class="isub">Monday · 3:00–4:00</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -192,7 +194,7 @@
           <li>Integrate clinical findings with imaging results to prioritize differential diagnoses and guide next diagnostic or therapeutic steps</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-lec-4">
         <div class="ch"><div class="num">4</div><div><div class="ititle">Differentiating Cardiac from Respiratory Disease</div><div class="isub">Tuesday · 1:00–2:00</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -205,7 +207,7 @@
           <li>Integrate history, breed, physical examination findings, and initial diagnostics to prioritize cardiac versus respiratory disease</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-lec-5">
         <div class="ch"><div class="num">5</div><div><div class="ititle">Approach to Respiratory Distress</div><div class="isub">Tuesday · 2:00–3:00</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -218,7 +220,7 @@
           <li>Integrate clinical presentation, physical examination findings, and point-of-care diagnostics to prioritize differential diagnoses and guide immediate stabilization</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-lec-6">
         <div class="ch"><div class="num">6</div><div><div class="ititle">General Management Strategies for Respiratory Disorders</div><div class="isub">Tuesday · 3:00–4:00</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -239,7 +241,7 @@
     <p class="intro">Seven self-directed learning modules covering the full breadth of respiratory and cardiac presentations across species, completed during morning independent learning blocks throughout the week.</p>
     <div class="ilist">
 
-      <div class="icard">
+      <div class="icard" id="card-ind">
         <div class="ch"><div class="num a">1</div><div><div class="ititle">Upper Airway Diseases</div><div class="isub">Self-paced</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -358,7 +360,7 @@
   <div class="panel" id="panel-lab">
     <p class="intro">Three hands-on sessions developing clinical skills in thoracic imaging interpretation, respiratory emergency management, and cardiac case reasoning.</p>
     <div class="ilist">
-      <div class="icard">
+      <div class="icard" id="card-lab-1">
         <div class="ch"><div class="num b">1</div><div><div class="ititle">Thoracic Imaging Lab</div><div class="isub">Tuesday &amp; Wednesday · 10:00–12:00 (split class)</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -373,7 +375,7 @@
           <li class="b">Communicate radiographic findings using clear, structured terminology and appropriate clinical interpretation</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-lab-2">
         <div class="ch"><div class="num b">2</div><div><div class="ititle">Treating the Cardiac Patient</div><div class="isub">Wednesday &amp; Thursday · 10:00–12:00 (split class)</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -388,7 +390,7 @@
           <li class="b">Reflect on clinical reasoning, prioritization, and decision-making during post-case debriefing</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-lab-3">
         <div class="ch"><div class="num b">3</div><div><div class="ititle">Respiratory Distress Simulations</div><div class="isub">Wednesday · 1:00–4:00</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -410,7 +412,7 @@
   <div class="panel" id="panel-dsc">
     <p class="intro">Three discussion group sessions applying clinical reasoning to complex cases across large animal, small animal, and thoracic imaging presentations.</p>
     <div class="ilist">
-      <div class="icard">
+      <div class="icard" id="card-dsc-1">
         <div class="ch"><div class="num g">1</div><div><div class="ititle">LA Respiratory Case Discussions</div><div class="isub">Thursday · 1:00–4:00 · Small groups</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -422,7 +424,7 @@
           <li class="g">Apply resource- and systems-based decision-making by balancing clinical benefit, cost, logistics, and herd impact, and communicate recommendations effectively</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-dsc-2">
         <div class="ch"><div class="num g">2</div><div><div class="ititle">SA Respiratory Case Discussions</div><div class="isub">Friday · 1:00–4:00 · Small groups</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -434,7 +436,7 @@
           <li class="g">Reassess and refine diagnostic and treatment plans based on patient response and evolving clinical information, and clearly communicate clinical reasoning during case discussions</li>
         </ul>
       </div>
-      <div class="icard">
+      <div class="icard" id="card-dsc-3">
         <div class="ch"><div class="num g">3</div><div><div class="ititle">Imaging Case Discussions</div><div class="isub">Thursday 11:00–12:00 &amp; Friday 10:00–12:00 · Small groups</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
@@ -460,6 +462,24 @@
     btn.classList.add('active');
     document.getElementById('panel-'+tab).classList.add('active');
   });
+
+  function goTo(tab, cardId) {
+    document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+    var btn = document.querySelector('.tb[data-tab="'+tab+'"]');
+    if (btn) btn.classList.add('active');
+    var panel = document.getElementById('panel-'+tab);
+    if (panel) panel.classList.add('active');
+    setTimeout(function(){
+      var card = document.getElementById(cardId);
+      if (card) {
+        card.scrollIntoView({behavior:'smooth', block:'start'});
+        card.style.transition = 'box-shadow 0.2s';
+        card.style.boxShadow = '0 0 0 2.5px #B31B1B';
+        setTimeout(function(){ card.style.boxShadow = ''; }, 1800);
+      }
+    }, 80);
+  }
 
   function equalise() {
     var row = document.getElementById('morning-row');
