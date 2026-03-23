@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPU Framework — Cornell CVM Stage 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #B31B1B;
+    --red-light: #d42222;
+    --red-pale: #fdf3f3;
+    --teal: #073949;
+    --teal-mid: #0e5a72;
+    --teal-light: #e4f1f5;
+    --teal-pale: #f2f9fb;
+    --gold: #c8972a;
+    --white: #ffffff;
+    --off-white: #fafaf8;
+    --gray-100: #f4f4f2;
+    --gray-200: #e8e8e4;
+    --gray-400: #a0a09a;
+    --gray-700: #444440;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--off-white);
+    color: var(--gray-700);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--teal);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(7,57,73,0.18);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .cvm-badge {
+    width: 44px; height: 44px;
+    background: var(--red);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cvm-badge svg { width: 26px; height: 26px; }
+  .header-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+  }
+  .header-title strong {
+    display: block;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .header-meta {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.5);
+    text-align: right;
+    line-height: 1.6;
+  }
+  .header-meta span {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--teal);
+    border-bottom: 4px solid var(--red);
+    padding: 60px 40px 52px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: rgba(255,255,255,0.65);
+  }
+  .hero-sub {
+    font-family: var(--sans);
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+  .hero-stats {
+    display: inline-flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .stat {
+    padding: 12px 28px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    text-align: center;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ── Search / Controls ── */
+  .controls {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 40px 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 220px;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-400);
+    width: 16px; height: 16px;
+    pointer-events: none;
+  }
+  #search {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    background: #fff;
+    color: var(--gray-700);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  #search:focus {
+    border-color: var(--teal-mid);
+    box-shadow: 0 0 0 3px rgba(14,90,114,0.1);
+  }
+  .btn-expand-all {
+    padding: 11px 20px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: #fff;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--teal);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-expand-all:hover {
+    background: var(--teal-light);
+    border-color: var(--teal-mid);
+  }
+
+  /* ── Grid ── */
+  .vpu-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 40px 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── VPU Card ── */
+  .vpu-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .vpu-card:hover { box-shadow: 0 4px 20px rgba(7,57,73,0.1); }
+  .vpu-card.hidden { display: none; }
+  .vpu-card.expanded .card-body { display: block; }
+  .vpu-card.expanded .chevron { transform: rotate(180deg); }
+  .vpu-card.expanded .card-header { border-bottom: 1px solid var(--teal-light); }
+
+  .card-header {
+    padding: 18px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    user-select: none;
+    background: #fff;
+    transition: background 0.15s;
+  }
+  .card-header:hover { background: var(--teal-pale); }
+
+  .vpu-number {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 1px;
+  }
+
+  .card-header-text { flex: 1; }
+  .card-title {
+    font-family: var(--serif);
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1.35;
+    margin-bottom: 4px;
+  }
+  .card-count {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--gray-400);
+    letter-spacing: 0.02em;
+  }
+  .card-count.has-count { color: var(--red); }
+
+  .chevron {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    color: var(--gray-400);
+    transition: transform 0.25s ease;
+    margin-top: 4px;
+  }
+
+  /* Card body */
+  .card-body {
+    display: none;
+    padding: 4px 0 14px;
+    background: #fff;
+  }
+
+  .presentation-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 7px 20px 7px 20px;
+    font-size: 0.875rem;
+    color: var(--gray-700);
+    line-height: 1.4;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+  .presentation-item:hover {
+    background: var(--teal-pale);
+    border-left-color: var(--teal-mid);
+  }
+  .pres-num {
+    flex-shrink: 0;
+    font-family: var(--serif);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--red);
+    width: 18px;
+    text-align: right;
+    padding-top: 1px;
+  }
+
+  .tbd-note {
+    padding: 14px 20px;
+    font-size: 0.83rem;
+    color: var(--gray-400);
+    font-style: italic;
+  }
+
+  /* ── No results ── */
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray-400);
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    display: none;
+  }
+
+  /* Highlight match */
+  mark {
+    background: #fff3b0;
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--gray-200);
+    padding: 24px 40px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--gray-400);
+    background: var(--gray-100);
+  }
+  .site-footer strong { color: var(--teal); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 40px 20px 36px; }
+    .vpu-grid { padding: 20px 16px 40px; gap: 12px; }
+    .controls { padding: 20px 16px 0; }
+    .header-inner { padding: 14px 20px; }
+    .hero-stats { flex-wrap: wrap; }
+    .stat { padding: 10px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="cvm-badge">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 4C9.37 4 4 9.37 4 16s5.37 12 12 12 12-5.37 12-12S22.63 4 16 4zm0 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S6 21.52 6 16 10.48 6 16 6z" fill="rgba(255,255,255,0.4)"/>
+          <path d="M16 9l2.2 4.5 4.8.7-3.5 3.4.8 4.8L16 20l-4.3 2.4.8-4.8L9 14.2l4.8-.7L16 9z" fill="white"/>
+        </svg>
+      </div>
+      <div class="header-title">
+        <strong>Cornell CVM — Stage 2 Curriculum Redesign</strong>
+        Veterinary Presentation Unit Framework
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<section class="hero">
+  <h1 class="hero-title">Veterinary Presentation Units<br><em>Complete Framework Map</em></h1>
+</section>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="search" placeholder="Search VPUs or presentations…" autocomplete="off">
+  </div>
+  <button class="btn-expand-all" id="toggle-all">Expand All</button>
+</div>
+
+<div class="vpu-grid" id="vpu-grid">
+  <div class="no-results" id="no-results">No matching VPUs or presentations found.</div>
+</div>
+
+<footer class="site-footer">
+  <strong>Cornell University College of Veterinary Medicine</strong> &nbsp;·&nbsp; Department of Clinical Sciences &nbsp;·&nbsp; Stage 2 Curriculum Redesign
+</footer>
+
+<script>
+const vpus = [
+  { number: 1, title: "Approach to Ocular Presentations", presentations: ["Ocular Discharge","Red Eye","Cloudy Eye","Blue Eye","Blindness","Eyelid Abnormalities","Abnormal Pupils","Abnormal Ocular Conformation"] },
+  { number: 2, title: "Approach to Dermatologic and Otic Presentations", presentations: ["Pruritis","Otic Pain, Itch, Odor, Exudate","Papules, Pustules, and Crusts","Alopecia","Cutaneous/Subcutaneous Masses","Skin Erosions/Ulcerations","Pigmentary Change","Excessive Scale/Hyperkeratosis","Petechiae/Ecchymoses"] },
+  { number: 3, title: "Approach to Problems of the Oral Cavity", presentations: ["Halitosis","Oral Pain","Orofacial Discharge/Swelling","Oral Mass","Malocclusion","Oral Bleeding","Pain or Inability to Open/Close Mouth","Ptyalism","Enlarged Mandibular Lymph Nodes"] },
+  { number: 4, title: "Approach to Respiratory Presentations", presentations: ["Cough/Hemoptysis","Nasal Discharge/Sneezing/Reverse Sneezing/Snorting/Epistaxis","Noisy Breathing","Abnormal Breathing/Tachypnea","Respiratory Distress"] },
+  { number: 5, title: "Approach to Gastrointestinal Presentations", presentations: ["Vomiting (acute vs. chronic)","Diarrhea (acute vs. chronic)","Hyporexia/Anorexia/\"Off Feed\"","Abdominal Pain/Colic","Ileus/Decreased Borborygmi","Abdominal Distension/Ping","Gagging/Retching","Dysphagia","Regurgitation","Weight Loss","Constipation/Obstipation","Tenesmus/Dyschezia","Anorectal Abnormalities"] },
+  { number: 6, title: "Approach to Changes in Urination", presentations: ["Stranguria/Pollakiuria","Pigmenturia/Hematuria","Polyuria/Polydipsia","Oliguria/Anuria","Urinary Incontinence","Periuria","Urogenital Structure Prolapse","Paraphimosis","Prostatomegaly"] },
+  { number: 7, title: "Approach to Mentation Change and Seizures", presentations: ["Abnormal Mentation","Seizures/Tremors","Lethargy/ADR","Behavior Change","Ataxia","Cranial Nerve Abnormalities","Head Pressing","Circling","Head Tilt","Nystagmus","Head Trauma"] },
+  { number: 8, title: "Approach to Abnormal Mobility, Gait, or Weakness", presentations: ["Difficulty Ambulating","Weakness","FL Lameness (acute vs. chronic, unilateral vs. bilateral)","HL Lameness (acute vs. chronic, unilateral vs. bilateral)","Joint Swelling (Mono vs. Poly)","Paresis/Paralysis","Neck or Back Pain","Ataxia","Stiffness/Shifting Leg Lameness","Hoof Conditions","Poor Performance","Abnormal Conformation","\"Down\""] },
+  { number: 9, title: "Approach to Impaired Perfusion", presentations: ["Pallor","Collapse","Syncope","Cold Extremities","Hypotension","Systemic Hypertension","Abnormal EKG","Abnormal SPO2","Hypothermia"] },
+  { number: 10, title: "Approach to Abnormal Physical Examination Findings", presentations: ["Jaundice","Fever","Lymphadenopathy","Generalized Edema","Facial Swelling/Deformity","Erosions/Ulcers/Necrosis","Sarcopenia","Abnormal Respiratory Auscultation","Abnormal Cardiac Auscultation/Heart Murmur/Arrhythmia","Abnormal Pulses","Abdominal Pain"] },
+  { number: 11, title: "Approach to Incidental Diagnostic Findings", presentations: ["Abnormal Blood Pressure","Pleural Effusion","Abdominal Effusion","Abdominal Mass","Intrathoracic Mass","Abnormal Labwork: Hyperglobulinemia","Abnormal Labwork: Lymphocytosis","Abnormal Labwork: Pancytopenia","Abnormal Labwork: Hypercalcemia"] },
+  { number: 12, title: "Approach to Reproductive and Developmental Abnormalities", presentations: ["Uterine/Ovarian Conditions","Estrous Cycle Conditions","Pregnancy Diagnosis","Dystocia","Retained Placenta/Metritis","Mating/Fertility Issues","Abortion/Stillbirth/Mummy","Mastitis/Abnormal Milk Production","Vaginal Discharge","Testicular Pain/Enlargement","Penis/Prepuce Conditions","Mammary Gland Abnormalities"] },
+  { number: 13, title: "Approach to Population-Level Clinical Presentations", presentations: [] },
+  { number: 14, title: "Approach to Preventative, Geriatric, and End-Of-Life Care", presentations: ["Euthanasia","Palliative Care","Co-Morbidities","Preventative Procedures","Parasite Prevention/Control","Vaccination","Screening Care","Nutrition","Training/Behavioral Issues","Husbandry","Breed-Related Screening"] },
+  { number: 15, title: "Approach to Common Emergency Presentations", presentations: ["Blunt Trauma","Bite Wounds","Lacerations","Burns","Toxin Ingestion/Medication Overdose","Respiratory Failure","Sepsis","GDV","Hemoabdomen"] },
+  { number: 16, title: "Approach to Common Exotic and Wildlife Presentations", presentations: ["Anorexia","Lack of Defecation","Diarrhea","Blood in Urine","Increased Respiratory Effort","Cloacal Prolapse","Unilateral and Bilateral Exophthalmos (Rabbits)","Regurgitation (Birds)","Hormonal Behavior (Birds)","Seizures (Ferret)","Hair Loss (Ferret)","Lethargy (Reptiles)","Head Tilt (Rabbit)","Vaginal Bleeding (Rabbit)","Wildlife Presentations"] },
+  { number: 17, title: "Approach to Anesthesia Management", presentations: ["Healthy Pet for Sterilization, Dental, Mass Removal, etc.","Healthy Horse/Cow for Recumbent Field Procedures","Standing Sedation","Healthy Neonate or Pediatric Patient","Aggressive/Fractious Patient","Patients with Co-Morbidities: MMVD, Seizures, Endocrinopathies","Hemodynamically Unstable Patients"] },
+  { number: 18, title: "Foundational Surgical Skills and Techniques", presentations: [] }
+];
+
+const grid = document.getElementById('vpu-grid');
+const noResults = document.getElementById('no-results');
+
+function highlight(text, query) {
+  if (!query) return escapeHtml(text);
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escapeHtml(text).replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+}
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function buildCards(query = '') {
+  const q = query.trim().toLowerCase();
+  grid.querySelectorAll('.vpu-card').forEach(c => c.remove());
+  let anyVisible = false;
+
+  vpus.forEach(vpu => {
+    const titleMatch = !q || vpu.title.toLowerCase().includes(q);
+    const matchingPres = vpu.presentations.filter(p => !q || p.toLowerCase().includes(q) || titleMatch);
+    const visible = !q || titleMatch || matchingPres.length > 0;
+
+    const card = document.createElement('div');
+    card.className = 'vpu-card' + (!visible ? ' hidden' : '') + (q && visible ? ' expanded' : '');
+    card.dataset.vpu = vpu.number;
+
+    const countText = vpu.presentations.length > 0
+      ? `${vpu.presentations.length} presentation${vpu.presentations.length !== 1 ? 's' : ''}`
+      : 'Presentations TBD';
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="vpu-number">${vpu.number}</div>
+        <div class="card-header-text">
+          <div class="card-title">${highlight(vpu.title, q)}</div>
+          <div class="card-count ${vpu.presentations.length > 0 ? 'has-count' : ''}">${countText}</div>
+        </div>
+        <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        ${vpu.presentations.length === 0
+          ? '<div class="tbd-note">Presentations to be determined.</div>'
+          : (titleMatch && !q
+              ? vpu.presentations
+              : matchingPres.length ? matchingPres : vpu.presentations
+            ).map((p, i) => {
+              const displayNum = vpu.presentations.indexOf(p) + 1;
+              return `<div class="presentation-item">
+                <span class="pres-num">${displayNum}</span>
+                <span>${highlight(p, q)}</span>
+              </div>`;
+            }).join('')
+        }
+      </div>
+    `;
+
+    card.querySelector('.card-header').addEventListener('click', () => {
+      card.classList.toggle('expanded');
+    });
+
+    grid.insertBefore(card, noResults);
+    if (visible) anyVisible = true;
+  });
+
+  noResults.style.display = anyVisible ? 'none' : 'block';
+}
+
+// Toggle all
+const toggleBtn = document.getElementById('toggle-all');
+let allExpanded = false;
+toggleBtn.addEventListener('click', () => {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.vpu-card:not(.hidden)').forEach(c => {
+    c.classList.toggle('expanded', allExpanded);
+  });
+  toggleBtn.textContent = allExpanded ? 'Collapse All' : 'Expand All';
+});
+
+// Search
+let searchTimeout;
+document.getElementById('search').addEventListener('input', e => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const q = e.target.value;
+    buildCards(q);
+    allExpanded = false;
+    toggleBtn.textContent = 'Expand All';
+  }, 160);
+});
+
+buildCards();
+</script>
+</body>
+</html>
