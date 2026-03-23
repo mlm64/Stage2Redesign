@@ -58,6 +58,9 @@
   .nb{margin-top:8px;padding:6px 9px;background:var(--cw);border-radius:4px;font-size:11px;color:#666;border-left:2.5px solid var(--cm);}
   .ilist{display:block;}
   .ilist .icard{margin-bottom:10px;}
+  .back-btn{display:none;align-items:center;gap:6px;margin-bottom:1.25rem;padding:6px 12px;background:transparent;border:.5px solid var(--cm);border-radius:6px;font-size:12px;font-weight:600;color:#888;cursor:pointer;width:fit-content;transition:color .15s,border-color .15s;}
+  .back-btn:hover{color:var(--cr);border-color:var(--cr);}
+  .back-btn.visible{display:flex;}
   @media(max-width:620px){.grid5{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -153,6 +156,7 @@
 
   <!-- LECTURES -->
   <div class="panel" id="panel-lec">
+    <button class="back-btn" id="back-lec" onclick="goBack()">&#8592; Back to weekly schedule</button>
     <p class="intro">Six lectures progressing from systematic assessment → localization → imaging → emergency management → therapeutics across small and large animal species.</p>
     <div class="ilist">
       <div class="icard" id="card-lec-1">
@@ -238,6 +242,7 @@
 
   <!-- INDEPENDENT LEARNING -->
   <div class="panel" id="panel-ind">
+    <button class="back-btn" id="back-ind" onclick="goBack()">&#8592; Back to weekly schedule</button>
     <p class="intro">Seven self-directed learning modules covering the full breadth of respiratory and cardiac presentations across species, completed during morning independent learning blocks throughout the week.</p>
     <div class="ilist">
 
@@ -358,6 +363,7 @@
 
   <!-- LABS -->
   <div class="panel" id="panel-lab">
+    <button class="back-btn" id="back-lab" onclick="goBack()">&#8592; Back to weekly schedule</button>
     <p class="intro">Three hands-on sessions developing clinical skills in thoracic imaging interpretation, respiratory emergency management, and cardiac case reasoning.</p>
     <div class="ilist">
       <div class="icard" id="card-lab-1">
@@ -410,6 +416,7 @@
 
   <!-- DISCUSSION GROUPS -->
   <div class="panel" id="panel-dsc">
+    <button class="back-btn" id="back-dsc" onclick="goBack()">&#8592; Back to weekly schedule</button>
     <p class="intro">Three discussion group sessions applying clinical reasoning to complex cases across large animal, small animal, and thoracic imaging presentations.</p>
     <div class="ilist">
       <div class="icard" id="card-dsc-1">
@@ -457,19 +464,28 @@
     var btn = e.target.closest('.tb');
     if (!btn) return;
     var tab = btn.getAttribute('data-tab');
-    document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('active');});
-    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
-    btn.classList.add('active');
-    document.getElementById('panel-'+tab).classList.add('active');
+    switchTab(tab);
+    hideAllBackBtns();
   });
 
-  function goTo(tab, cardId) {
+  function switchTab(tab) {
     document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('active');});
     document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
     var btn = document.querySelector('.tb[data-tab="'+tab+'"]');
     if (btn) btn.classList.add('active');
     var panel = document.getElementById('panel-'+tab);
     if (panel) panel.classList.add('active');
+  }
+
+  function hideAllBackBtns() {
+    document.querySelectorAll('.back-btn').forEach(function(b){ b.classList.remove('visible'); });
+  }
+
+  function goTo(tab, cardId) {
+    switchTab(tab);
+    hideAllBackBtns();
+    var backBtn = document.getElementById('back-'+tab);
+    if (backBtn) backBtn.classList.add('visible');
     setTimeout(function(){
       var card = document.getElementById(cardId);
       if (card) {
@@ -479,6 +495,12 @@
         setTimeout(function(){ card.style.boxShadow = ''; }, 1800);
       }
     }, 80);
+  }
+
+  function goBack() {
+    switchTab('sched');
+    hideAllBackBtns();
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   function equalise() {
