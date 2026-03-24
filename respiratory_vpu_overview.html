@@ -5,14 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Respiratory Presentations VPU</title>
 <style>
-  :root { --cr: #B31B1B; --cd: #222; --cw: #F7F4F0; --cm: #E8E0D6; }
+  :root { --cr: #B31B1B; --ct: #073949; --cd: #222; --cw: #F7F4F0; --cm: #E8E0D6; }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--cd);background:#FAFAF8;padding:2rem 1rem;}
-  .wrap{max-width:960px;margin:0 auto;}
-  .hdr{border-left:4px solid var(--cr);padding:1.25rem 1.5rem;margin-bottom:2rem;background:linear-gradient(to right,rgba(179,27,27,0.04),transparent);}
-  .hdr .tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cr);margin-bottom:.35rem;}
-  .hdr h1{font-family:Georgia,serif;font-size:1.75rem;font-weight:600;line-height:1.15;color:var(--cd);}
-  .tabs{display:flex;border-bottom:1.5px solid var(--cm);margin-bottom:2rem;overflow-x:auto;}
+  body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--cd);background:#fff;padding:0 0 2rem;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 1rem;}
+  .hdr{background:var(--ct);margin:0 -1rem 0;padding:0;border-bottom:4px solid var(--cr);margin-bottom:2rem;}
+  .hdr-top{display:flex;align-items:center;gap:12px;padding:1rem 1.5rem 0;}
+  .hdr-icon{width:36px;height:36px;background:var(--cr);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .hdr-icon svg{width:20px;height:20px;}
+  .hdr-meta{display:flex;flex-direction:column;}
+  .hdr-meta .inst{font-size:13px;font-weight:700;color:#fff;letter-spacing:0.01em;}
+  .hdr-meta .sub{font-size:12px;color:rgba(255,255,255,0.6);margin-top:1px;}
+  .hdr-title{padding:2rem 1.5rem 2.5rem;text-align:center;}
+  .hdr-title h1{font-family:Georgia,serif;font-size:3rem;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-0.01em;}
+  .tabs{display:flex;border-bottom:1.5px solid var(--cm);margin-bottom:2rem;overflow-x:auto;margin-top:1.5rem;}
   .tb{padding:.6rem 1rem;font-size:13px;font-weight:600;color:#888;background:transparent;border:none;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;}
   .tb:hover{color:var(--cd);}
   .tb.active{color:var(--cr);border-bottom-color:var(--cr);}
@@ -68,8 +74,20 @@
 <div class="wrap">
 
   <div class="hdr">
-    <div class="tag">Cornell University College of Veterinary Medicine</div>
-    <h1>Respiratory Presentations VPU</h1>
+    <div class="hdr-top">
+      <div class="hdr-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="hdr-meta">
+        <span class="inst">Cornell CVM — Stage 2 Curriculum Redesign</span>
+        <span class="sub">Veterinary Presentation Unit Framework</span>
+      </div>
+    </div>
+    <div class="hdr-title">
+      <h1>Respiratory Presentations VPU</h1>
+    </div>
   </div>
 
   <div class="tabs" id="tabs">
