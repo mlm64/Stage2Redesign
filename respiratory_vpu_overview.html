@@ -96,6 +96,7 @@
     <button class="tb" data-tab="ind">Independent Learning</button>
     <button class="tb" data-tab="lab">Labs</button>
     <button class="tb" data-tab="dsc">Case Discussions</button>
+    <button class="tb" data-tab="typical">Typical Student Weekly Schedule</button>
   </div>
 
   <!-- SCHEDULE -->
@@ -272,7 +273,7 @@
     <div class="ilist">
 
       <div class="icard" id="card-ind">
-        <div class="ch"><div class="num a">1</div><div><div class="ititle">Upper Airway Diseases</div><div class="isub">Self-paced</div></div></div>
+        <div class="ch"><div class="num a">1</div><div><div class="ititle">Upper Airway Diseases</div><div class="isub">Self-paced · Complete by Thursday at 2:00 pm</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
           <li class="a">Differentiate major infectious upper respiratory diseases across species (e.g., CIRDC, feline URTD, bovine respiratory disease complex, equine viral URD and strangles, swine influenza and atrophic rhinitis, small ruminant URD) based on pathophysiology, transmission, and clinical presentation</li>
@@ -291,7 +292,7 @@
       </div>
 
       <div class="icard">
-        <div class="ch"><div class="num a">2</div><div><div class="ititle">Lower Airway Diseases</div><div class="isub">Self-paced</div></div></div>
+        <div class="ch"><div class="num a">2</div><div><div class="ititle">Lower Airway Diseases</div><div class="isub">Self-paced · Complete by Thursday at 2:00 pm</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
           <li class="a">Differentiate inflammatory lower airway diseases (e.g., feline asthma, equine asthma, non-infectious bronchitis) based on pathophysiology, species, and clinical presentation</li>
@@ -308,7 +309,7 @@
       </div>
 
       <div class="icard">
-        <div class="ch"><div class="num a">3</div><div><div class="ititle">Lung Parenchyma</div><div class="isub">Self-paced</div></div></div>
+        <div class="ch"><div class="num a">3</div><div><div class="ititle">Lung Parenchyma</div><div class="isub">Self-paced · Complete by Thursday at 2:00 pm</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
           <li class="a">Differentiate types of pneumonia (e.g., bacterial, aspiration, viral) based on pathophysiology, risk factors, and clinical presentation across species</li>
@@ -327,7 +328,7 @@
       </div>
 
       <div class="icard">
-        <div class="ch"><div class="num a">4</div><div><div class="ititle">Pleural Space</div><div class="isub">Self-paced</div></div></div>
+        <div class="ch"><div class="num a">4</div><div><div class="ititle">Pleural Space</div><div class="isub">Self-paced · Complete by Friday at 1:00 pm</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
           <li class="a">Apply a structured framework to categorize pleural effusions (e.g., air, pus, chyle, blood) based on history, physical examination, and initial diagnostics</li>
@@ -346,7 +347,7 @@
       </div>
 
       <div class="icard">
-        <div class="ch"><div class="num a">5</div><div><div class="ititle">SA Cardiac Diseases</div><div class="isub">Self-paced</div></div></div>
+        <div class="ch"><div class="num a">5</div><div><div class="ititle">SA Cardiac Diseases</div><div class="isub">Self-paced · Complete by Wednesday at 1:00 pm</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
           <li class="a">Recognize hallmark features of myxomatous mitral valve degeneration (e.g., left apical systolic murmur, small breed predisposition) and relate them to disease progression</li>
@@ -362,7 +363,7 @@
       </div>
 
       <div class="icard">
-        <div class="ch"><div class="num a">6</div><div><div class="ititle">Congestive Heart Failure</div><div class="isub">Self-paced</div></div></div>
+        <div class="ch"><div class="num a">6</div><div><div class="ititle">Congestive Heart Failure</div><div class="isub">Self-paced · Complete by Wednesday at 1:00 pm</div></div></div>
         <div class="ol">Learning Outcomes</div>
         <ul class="oul">
           <li class="a">Explain the pathophysiologic mechanisms leading to congestive heart failure (CHF), including increased hydrostatic pressure, fluid accumulation, and neurohormonal activation</li>
@@ -482,6 +483,88 @@
 
     </div>
   </div>
+  <!-- TYPICAL STUDENT WEEKLY SCHEDULE -->
+  <div class="panel" id="panel-typical">
+    <style>
+      .tsg{display:grid;grid-template-columns:44px repeat(5,minmax(0,1fr));grid-template-rows:[r8]52px [r9]52px [r10]52px [r11]52px [r12]52px [r13]52px [r14]52px [r15]52px [r16]52px [r17]52px [r18]52px [r19]52px [r20];gap:3px;}
+      .tsl{font-size:9px;font-weight:600;color:#aaa;text-align:right;padding-right:5px;letter-spacing:.03em;display:flex;align-items:flex-start;padding-top:3px;}
+      .tsb{border-radius:5px;padding:6px 8px;font-size:11px;line-height:1.3;border:.5px solid transparent;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
+      .tsb .l{font-weight:600;text-align:center;white-space:pre-line;}
+      .ece{background:#F3EEF8;border-color:#C9B8E8;color:#4A2080;}
+      .ilg{background:#FEF9EC;border-color:#F0D98A;color:#6B4A00;}
+      .lwc{background:#FEF3F3;border-color:#F5CACA;color:#7A1010;}
+      .lun{background:#F4F0EC;border-color:#DDD5C8;color:#888;font-style:italic;}
+      .qiz{background:#E8F4FD;border-color:#A8D4F0;color:#0A4A72;}
+      .svr{background:#F1EFE8;border-color:#D3D1C7;color:#444441;}
+    </style>
+    <div style="display:grid;grid-template-columns:44px repeat(5,minmax(0,1fr));gap:3px;margin-bottom:4px;">
+      <div></div>
+      <div class="sd">Monday</div>
+      <div class="sd">Tuesday</div>
+      <div class="sd">Wednesday</div>
+      <div class="sd">Thursday</div>
+      <div class="sd">Friday</div>
+    </div>
+    <div class="tsg">
+      <div class="tsl" style="grid-row:r8/r9;">8 am</div>
+      <div class="tsl" style="grid-row:r9/r10;">9 am</div>
+      <div class="tsl" style="grid-row:r10/r11;">10 am</div>
+      <div class="tsl" style="grid-row:r11/r12;">11 am</div>
+      <div class="tsl" style="grid-row:r12/r13;">12 pm</div>
+      <div class="tsl" style="grid-row:r13/r14;">1 pm</div>
+      <div class="tsl" style="grid-row:r14/r15;">2 pm</div>
+      <div class="tsl" style="grid-row:r15/r16;">3 pm</div>
+      <div class="tsl" style="grid-row:r16/r17;">4 pm</div>
+      <div class="tsl" style="grid-row:r17/r18;">5 pm</div>
+      <div class="tsl" style="grid-row:r18/r19;">6 pm</div>
+      <div class="tsl" style="grid-row:r19/r20;">7 pm</div>
+      <!-- MONDAY -->
+      <div class="tsb ilg" style="grid-column:2;grid-row:r8/r12;"><div class="l">Independent Learning Time
+
+Small Group Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb lun" style="grid-column:2;grid-row:r12/r13;"><div class="l">Lunch</div></div>
+      <div class="tsb qiz" style="grid-column:2;grid-row:r13/r14;"><div class="l">Weekly Quiz</div></div>
+      <div class="tsb lwc" style="grid-column:2;grid-row:r14/r17;"><div class="l">Lectures
+
+Whole Class Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb svr" style="grid-column:2;grid-row:r17/r20;"><div class="l">Study / Review</div></div>
+      <!-- TUESDAY -->
+      <div class="tsb ece" style="grid-column:3;grid-row:r8/r12;"><div class="l">Early Clinical Experience</div><div class="s" style="text-align:center;margin-top:4px;">(rotating days)</div></div>
+      <div class="tsb lun" style="grid-column:3;grid-row:r12/r13;"><div class="l">Lunch</div></div>
+      <div class="tsb lwc" style="grid-column:3;grid-row:r13/r17;"><div class="l">Lectures
+
+Whole Class Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb svr" style="grid-column:3;grid-row:r17/r20;"><div class="l">Study / Review</div></div>
+      <!-- WEDNESDAY -->
+      <div class="tsb ilg" style="grid-column:4;grid-row:r8/r12;"><div class="l">Independent Learning Time
+
+Small Group Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb lun" style="grid-column:4;grid-row:r12/r13;"><div class="l">Lunch</div></div>
+      <div class="tsb lwc" style="grid-column:4;grid-row:r13/r17;"><div class="l">Lectures
+
+Whole Class Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb svr" style="grid-column:4;grid-row:r17/r20;"><div class="l">Study / Review</div></div>
+      <!-- THURSDAY -->
+      <div class="tsb ilg" style="grid-column:5;grid-row:r8/r12;"><div class="l">Independent Learning Time
+
+Small Group Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb lun" style="grid-column:5;grid-row:r12/r13;"><div class="l">Lunch</div></div>
+      <div class="tsb lwc" style="grid-column:5;grid-row:r13/r17;"><div class="l">Lectures
+
+Whole Class Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb svr" style="grid-column:5;grid-row:r17/r20;"><div class="l">Study / Review</div></div>
+      <!-- FRIDAY -->
+      <div class="tsb ilg" style="grid-column:6;grid-row:r8/r12;"><div class="l">Independent Learning Time
+
+Small Group Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb lun" style="grid-column:6;grid-row:r12/r13;"><div class="l">Lunch</div></div>
+      <div class="tsb lwc" style="grid-column:6;grid-row:r13/r17;"><div class="l">Lectures
+
+Whole Class Labs, Case Discussions, or Simulations</div></div>
+      <div class="tsb svr" style="grid-column:6;grid-row:r17/r20;"><div class="l">Study / Review</div></div>
+    </div>
+  </div>
+
 <script>
   document.getElementById('tabs').addEventListener('click', function(e) {
     var btn = e.target.closest('.tb');
